@@ -3,7 +3,7 @@
 
    CADA VEZ QUE CAMBIES ALGO (guion.js, index.html, íconos…), SUBÍ ESTE NÚMERO.
    Así los teléfonos detectan la versión nueva y muestran el aviso "Actualizar". */
-const VERSION = "2026-10-09.1";
+const VERSION = "2026-10-09.2";
 
 const CACHE = "mamma-mia-" + VERSION;
 const ARCHIVOS = [

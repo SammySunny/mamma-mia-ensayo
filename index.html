@@ -236,6 +236,48 @@ button.enlace{
 .aviso-nueva[hidden]{display:none}
 .aviso-nueva .acciones{margin:0}
 .aviso-nueva button.principal,.aviso-nueva button.secundaria{padding:9px 16px}
+
+/* ---------- instalar la app ---------- */
+.cartel-inst{
+  display:flex;gap:14px;align-items:flex-start;background:var(--mar);
+  border:1px solid rgba(242,193,78,.45);border-left:3px solid var(--oro);border-radius:3px;
+  padding:14px 16px;margin:0 0 26px;
+}
+.cartel-inst img{width:52px;height:52px;border-radius:12px;flex:none}
+.cartel-inst .txt{flex:1;min-width:0}
+.cartel-inst b{display:block;font-size:16px;font-weight:600}
+.cartel-inst small{display:block;color:var(--cal-tenue);font-size:14px;margin-top:2px}
+.cartel-inst .acciones{margin-top:12px}
+.cartel-inst button.principal,.cartel-inst button.secundaria{padding:9px 16px}
+
+.velo{position:fixed;inset:0;z-index:20;background:rgba(5,9,22,.8);
+  display:flex;align-items:flex-end;justify-content:center;padding:12px}
+@media (min-width:600px){.velo{align-items:center}}
+.velo[hidden]{display:none}
+.hoja-inst{
+  background:var(--mar);border-top:3px solid var(--oro);border-radius:6px;
+  width:100%;max-width:520px;max-height:90vh;overflow:auto;
+  padding:20px 20px calc(20px + env(safe-area-inset-bottom));
+}
+.hoja-inst h3{font-family:var(--serif);font-weight:400;font-size:23px;color:var(--oro);margin:0 0 8px}
+.hoja-inst .ayuda{margin:0 0 6px}
+.pasos-inst{list-style:none;counter-reset:paso;padding:0;margin:16px 0}
+.pasos-inst li{counter-increment:paso;display:flex;gap:12px;align-items:flex-start;margin:0 0 14px}
+.pasos-inst li::before{
+  content:counter(paso);flex:none;width:28px;height:28px;border-radius:50%;
+  background:var(--oro);color:#22180A;font-weight:700;font-size:15px;
+  display:flex;align-items:center;justify-content:center;
+}
+.ico-inst{display:inline-block;width:22px;height:22px;vertical-align:-5px;margin:0 2px;color:var(--egeo)}
+.link-copia{
+  width:100%;background:var(--noche);color:var(--cal);font:inherit;font-size:14px;
+  border:1px solid rgba(255,255,255,.22);border-radius:3px;padding:9px 10px;
+}
+.hoja-inst a.boton{
+  display:inline-block;background:none;color:var(--cal-tenue);border:1px solid rgba(255,255,255,.22);
+  border-radius:3px;padding:12px 18px;text-decoration:none;
+}
+.hoja-inst a.boton:hover,.hoja-inst a.boton:focus-visible{color:var(--cal);border-color:var(--cal)}
 </style>
 </head>
 <body>
@@ -246,7 +288,11 @@ button.enlace{
   </header>
   <nav class="rastro" id="rastro"></nav>
   <main id="app"></main>
-  <p class="pie">Instalala desde el menú del navegador ("Instalar app" o "Agregar a inicio"): después funciona sin internet. Tus ajustes quedan guardados en este dispositivo.</p>
+  <p class="pie">Funciona sin internet una vez instalada. Tus ajustes quedan guardados en este dispositivo.
+    <button class="enlace" id="pie-instalar" hidden>Instalar la app</button></p>
+</div>
+<div class="velo" id="velo-inst" hidden>
+  <div class="hoja-inst" id="hoja-inst" role="dialog" aria-modal="true" aria-labelledby="inst-titulo"></div>
 </div>
 <div class="aviso-nueva" id="aviso-nueva" role="status" hidden>
   <span>Hay una versión nueva del guion.</span>
@@ -291,13 +337,198 @@ if (AJUSTES.practica){
   if (g.modo === "quiz" || g.modo === "hablado") estado.modo = g.modo;
 }
 
+/* ============================================================
+   INSTALAR LA APP
+   Android (Chrome, Edge, Samsung): botón que abre la ventana de instalación.
+   iPhone: Safari no deja instalar desde la página, así que se explican los pasos.
+   Dentro de WhatsApp, Instagram, etc.: hay que abrirla primero en el navegador.
+   ============================================================ */
+const INST = (() => {
+  const ua = navigator.userAgent || "";
+  const ios = /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  const android = /Android/i.test(ua);
+  const enApp = /FBAN|FBAV|FB_IAB|FBIOS|Instagram|WhatsApp|Line\/|Twitter|TikTok|musical_ly|Snapchat|LinkedInApp/i.test(ua)
+             || (android && /; wv\)/.test(ua));
+  const abierta = ["standalone","fullscreen","minimal-ui"].some(m => matchMedia("(display-mode: " + m + ")").matches)
+             || navigator.standalone === true;
+  return {
+    ios, android, enApp, abierta,
+    iosOtro: ios && /CriOS|FxiOS|EdgiOS|OPiOS/i.test(ua),   // Chrome, Firefox… en el iPhone
+    web: /^https?:$/.test(location.protocol),
+    aviso: null,            // el evento de Chrome para instalar, cuando llega
+    recien: false,          // se acaba de instalar: mostrar "¡Listo!"
+    oculto: AJUSTES.instalarOculto === true,
+    instalada: AJUSTES.instalada === true
+  };
+})();
+
+const ICO = {
+  compartir: `<svg class="ico-inst" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Compartir"><path d="M8 8H6a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1h-2"/><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/></svg>`,
+  mas: `<svg class="ico-inst" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-label="Agregar"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M12 8v8M8 12h8"/></svg>`,
+  puntos: `<svg class="ico-inst" viewBox="0 0 24 24" fill="currentColor" aria-label="menú"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>`,
+  puntosH: `<svg class="ico-inst" viewBox="0 0 24 24" fill="currentColor" aria-label="menú"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>`,
+  pc: `<svg class="ico-inst" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="instalar"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M12 7.5v6M9.5 11l2.5 2.5 2.5-2.5M8 21h8"/></svg>`
+};
+
+function mostrarCartel(){
+  if (!INST.web || INST.abierta) return false;
+  if (INST.recien) return true;
+  if (INST.oculto || INST.instalada) return false;
+  if (INST.aviso) return true;
+  return INST.ios || INST.android;   // en la computadora, sólo si el navegador la puede instalar
+}
+
+function pintarCartelInstalar(){
+  const caja = document.getElementById("cartel-instalar");
+  if (!caja) return;
+  if (!mostrarCartel()){ caja.innerHTML = ""; return; }
+  if (INST.recien){
+    caja.innerHTML = `<div class="cartel-inst" role="status">
+      <img src="iconos/icono-192.png" alt="">
+      <div class="txt"><b>¡Listo, ya está instalada!</b>
+        <small>Buscá el ícono MM en tu pantalla de inicio y abrila desde ahí.</small>
+        <div class="acciones"><button class="secundaria" id="inst-ok">Entendido</button></div></div>
+    </div>`;
+    document.getElementById("inst-ok").onclick = () => { INST.recien = false; pintarCartelInstalar(); };
+    return;
+  }
+  const boton = INST.enApp ? "Cómo abrirla" : INST.ios ? "Cómo instalarla" : "Instalar app";
+  const sub = INST.enApp
+    ? "Para instalarla, primero abrí este link en el navegador."
+    : "Tenela en tu pantalla de inicio y usala sin internet.";
+  caja.innerHTML = `<div class="cartel-inst">
+    <img src="iconos/icono-192.png" alt="">
+    <div class="txt"><b>Instalá la app en tu teléfono</b><small>${sub}</small>
+      <div class="acciones">
+        <button class="principal" id="inst-si">${boton}</button>
+        <button class="secundaria" id="inst-no">Ahora no</button>
+      </div></div>
+  </div>`;
+  document.getElementById("inst-si").onclick = instalar;
+  document.getElementById("inst-no").onclick = () => {
+    INST.oculto = true; guardarAjustes(); pintarCartelInstalar();
+  };
+}
+
+function pintarPieInstalar(){
+  const b = document.getElementById("pie-instalar");
+  if (b) b.hidden = !INST.web || INST.abierta;
+}
+
+function instalar(){
+  if (INST.aviso && !INST.enApp){
+    const ev = INST.aviso;
+    INST.aviso = null;   // Chrome deja usarlo una sola vez
+    ev.prompt();
+    ev.userChoice.then(r => {
+      if (r && r.outcome === "accepted"){ INST.recien = true; INST.instalada = true; guardarAjustes(); }
+      pintarCartelInstalar();
+    }).catch(() => {});
+    return;
+  }
+  abrirAyudaInstalar();
+}
+
+function abrirAyudaInstalar(){
+  const url = location.href.split("#")[0];
+  const navegador = INST.ios ? "Safari" : "Chrome";
+  const menu = INST.ios ? ICO.puntosH : ICO.puntos;
+  const copiar = `<input class="link-copia" id="inst-link" readonly value="${esc(url)}" aria-label="Link de la app">`;
+  let titulo, cuerpo, extra = "";
+
+  if (INST.enApp){
+    const intent = "intent://" + location.host + location.pathname + location.search +
+      "#Intent;scheme=" + location.protocol.replace(":", "") + ";package=com.android.chrome;S.browser_fallback_url=" +
+      encodeURIComponent(url) + ";end";
+    titulo = "Abrila en " + navegador;
+    cuerpo = `<p class="ayuda">Estás viendo la página dentro de otra app (WhatsApp, Instagram, Facebook…) y desde acá no se puede instalar.</p>
+      <ol class="pasos-inst">
+        <li><span>Tocá el menú ${menu} de esta pantalla y elegí <b>Abrir en ${navegador}</b> (o "Abrir en el navegador").</span></li>
+        <li><span>Si no aparece, copiá el link y pegalo en ${navegador}.</span></li>
+        <li><span>Ya en ${navegador}, tocá <b>${INST.ios ? "Cómo instalarla" : "Instalar app"}</b> en el cartel de arriba.</span></li>
+      </ol>${copiar}`;
+    extra = (INST.android ? `<a class="boton" href="${esc(intent)}">Abrir en Chrome</a>` : "") +
+      `<button class="principal" id="inst-copiar">Copiar link</button>`;
+  } else if (INST.ios){
+    titulo = "Instalala en tu " + (/iPad/.test(navigator.userAgent) || navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent) ? "iPad" : "iPhone");
+    cuerpo = (INST.iosOtro
+      ? `<p class="ayuda">Lo más seguro es hacerlo desde <b>Safari</b>: copiá el link, abrilo en Safari y seguí estos pasos.</p>${copiar}`
+      : `<p class="ayuda">Son tres toques en Safari:</p>`) +
+      `<ol class="pasos-inst">
+        <li><span>Tocá <b>Compartir</b> ${ICO.compartir} en la barra de Safari. Si no lo ves, tocá primero ${ICO.puntosH} o la barra de abajo.</span></li>
+        <li><span>Bajá en la lista y tocá <b>Agregar a inicio</b> ${ICO.mas}.</span></li>
+        <li><span>Tocá <b>Agregar</b>. El ícono MM queda en tu pantalla de inicio.</span></li>
+      </ol>`;
+    if (INST.iosOtro) extra = `<button class="principal" id="inst-copiar">Copiar link</button>`;
+  } else if (INST.android){
+    titulo = "Instalala en tu teléfono";
+    cuerpo = `<p class="ayuda">Desde el menú del navegador:</p>
+      <ol class="pasos-inst">
+        <li><span>Tocá el menú ${ICO.puntos} arriba a la derecha (en Samsung Internet es ☰, abajo).</span></li>
+        <li><span>Elegí <b>Instalar app</b> o <b>Agregar a la pantalla principal</b>.</span></li>
+        <li><span>Confirmá con <b>Instalar</b>. El ícono MM queda en tu pantalla de inicio.</span></li>
+      </ol>`;
+  } else {
+    titulo = "Instalala en la computadora";
+    cuerpo = `<ol class="pasos-inst">
+        <li><span>Abrí esta página en <b>Chrome</b> o <b>Edge</b>.</span></li>
+        <li><span>Tocá el ícono de instalar ${ICO.pc} al final de la barra de direcciones, o buscá <b>Instalar</b> en el menú ${ICO.puntos}.</span></li>
+      </ol>
+      <p class="ayuda">En el teléfono es más fácil: abrí este mismo link y tocá <b>Instalar app</b>.</p>${copiar}`;
+    extra = `<button class="principal" id="inst-copiar">Copiar link</button>`;
+  }
+
+  const yaEsta = INST.instalada
+    ? `<p class="nota">Si ya la instalaste, buscá el ícono MM en tu pantalla de inicio.</p>` : "";
+  const hoja = document.getElementById("hoja-inst");
+  hoja.innerHTML = `<h3 id="inst-titulo">${esc(titulo)}</h3>${cuerpo}${yaEsta}
+    <p class="nota">Abrila una vez con internet; después funciona sin conexión.</p>
+    <div class="acciones">${extra}<button class="secundaria" id="inst-cerrar">Cerrar</button></div>`;
+
+  const velo = document.getElementById("velo-inst");
+  velo.hidden = false;
+  document.getElementById("inst-cerrar").onclick = cerrarAyudaInstalar;
+  const bc = document.getElementById("inst-copiar");
+  if (bc) bc.onclick = () => {
+    const inp = document.getElementById("inst-link");
+    const listo = () => { bc.textContent = "¡Link copiado!"; };
+    const aMano = () => { inp.focus(); inp.select(); try { document.execCommand("copy"); } catch(e){} listo(); };
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(url).then(listo, aMano);
+    else aMano();
+  };
+  (bc || document.getElementById("inst-cerrar")).focus();
+}
+
+function cerrarAyudaInstalar(){
+  document.getElementById("velo-inst").hidden = true;
+}
+
+document.getElementById("velo-inst").addEventListener("click", ev => {
+  if (ev.target.id === "velo-inst") cerrarAyudaInstalar();
+});
+document.getElementById("pie-instalar").onclick = instalar;
+
+window.addEventListener("beforeinstallprompt", ev => {
+  ev.preventDefault();          // usamos nuestro propio botón
+  INST.aviso = ev;
+  if (INST.instalada){ INST.instalada = false; guardarAjustes(); }   // la desinstalaron
+  pintarCartelInstalar();
+});
+window.addEventListener("appinstalled", () => {
+  INST.aviso = null; INST.recien = true; INST.instalada = true;
+  guardarAjustes();
+  pintarCartelInstalar();
+});
+
 /* se llama cada vez que cambia una opción */
 function guardarAjustes(){
   const datos = {
     v: 1,
     practica: {canciones:estado.canciones, desordenar:estado.desordenar, voz:estado.voz, modo:estado.modo},
     mic: !!MIC.activo,
-    voz: {vel:VOZ.vel, tonoVariado:VOZ.tonoVariado, soloLocales:VOZ.soloLocales, elegido:VOZ.elegido}
+    voz: {vel:VOZ.vel, tonoVariado:VOZ.tonoVariado, soloLocales:VOZ.soloLocales, elegido:VOZ.elegido},
+    instalarOculto: INST.oculto,
+    instalada: INST.instalada
   };
   try { localStorage.setItem(CLAVE_AJUSTES, JSON.stringify(datos)); } catch(e){}
 }
@@ -779,6 +1010,7 @@ function volverHasta(v){
 }
 
 window.addEventListener("popstate", ev => {
+  cerrarAyudaInstalar();
   pararVoz(); ensayo = null;
   const destino = ev.state && typeof ev.state.i === "number" ? ev.state.i + 1 : pila.length - 1;
   pila.length = Math.max(1, Math.min(pila.length, destino));
@@ -832,9 +1064,11 @@ function pintarElenco(){
     const detalle = cantado ? `${hablado} habladas · ${cantado} cantadas` : `${hablado} habladas`;
     return `<button class="ficha" data-pj="${esc(pj)}"><b>${esc(pj)}</b><small>${detalle}</small></button>`;
   }).join("");
-  app.innerHTML = `<h2>¿A quién hacés?</h2>
+  app.innerHTML = `<div id="cartel-instalar"></div>
+    <h2>¿A quién hacés?</h2>
     <p class="ayuda">Elegí tu personaje y después la escena que querés repasar.</p>
     <div class="elenco">${fichas}</div>`;
+  pintarCartelInstalar();
   app.querySelectorAll(".ficha").forEach(b => b.onclick = () => {
     estado.pj = b.dataset.pj;
     ir("escenas");
@@ -1372,7 +1606,11 @@ function pintarLectura(escIdx){
    teclado
    ============================================================ */
 document.addEventListener("keydown", ev => {
-  if (ev.target && ev.target.closest && ev.target.closest("#aviso-nueva")) return;
+  if (!document.getElementById("velo-inst").hidden){
+    if (ev.key === "Escape") cerrarAyudaInstalar();
+    return;
+  }
+  if (ev.target && ev.target.closest && ev.target.closest("#aviso-nueva, #cartel-instalar")) return;
   if (ensayo){
     if (ev.key === " " || ev.key === "Enter"){
       const b = document.getElementById("eh-sigue") || document.getElementById("eh-pausa");
@@ -1392,6 +1630,7 @@ document.addEventListener("keydown", ev => {
 
 try { history.replaceState({i:0}, ""); } catch(e){ usaHistoria = false; }
 pintar();
+pintarPieInstalar();
 
 /* ============================================================
    app instalable: funciona sin internet y avisa si hay versión nueva
