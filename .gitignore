@@ -1,0 +1,8 @@
+# guion original completo: no se publica
+*.pdf
+
+# versión vieja de un solo archivo (respaldo local, sin la escena 11)
+mamma-mia-ensayo.html
+
+.DS_Store
+Thumbs.db

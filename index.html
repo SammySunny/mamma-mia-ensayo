@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mamma Mia — ensayo de letra</title>
+<meta name="description" content="Ensayá tu letra de Mamma Mia escena por escena.">
+<meta name="theme-color" content="#0E1836">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="iconos/icono.svg" type="image/svg+xml">
+<link rel="icon" href="iconos/icono-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="iconos/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mamma Mia">
+<style>
+:root{
+  --noche:#0E1836;
+  --mar:#18265C;
+  --mar-alto:#223378;
+  --cal:#F3F1E9;
+  --cal-tenue:#A9B2D4;
+  --oro:#F2C14E;
+  --bugan:#FF4F87;
+  --egeo:#5BD7C4;
+  --coral:#FF7A66;
+  --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--noche);
+  color:var(--cal);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.5;
+  -webkit-text-size-adjust:100%;
+}
+.hoja{max-width:680px;margin:0 auto;padding:28px 20px 72px}
+
+/* ---------- encabezado ---------- */
+.marquesina{text-align:center;padding:14px 0 26px;border-bottom:1px solid rgba(242,193,78,.28)}
+.marquesina h1{
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:400;
+  font-size:clamp(40px,12vw,68px);
+  line-height:.95;
+  margin:0;
+  color:var(--oro);
+  letter-spacing:-.01em;
+}
+.marquesina p{margin:10px 0 0;color:var(--cal-tenue);font-size:15px}
+
+/* ---------- rastro de pasos ---------- */
+.rastro{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px;color:var(--cal-tenue);margin:22px 0 18px}
+.rastro button{
+  background:none;border:none;padding:0;margin:0;cursor:pointer;
+  color:var(--bugan);font:inherit;text-decoration:underline;text-underline-offset:3px;
+}
+.rastro span.sep{opacity:.5}
+
+h2{font-family:var(--serif);font-weight:400;font-size:24px;margin:0 0 4px}
+.ayuda{color:var(--cal-tenue);font-size:15px;margin:0 0 20px}
+
+/* ---------- elenco ---------- */
+.elenco{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.ficha{
+  display:flex;flex-direction:column;gap:2px;align-items:flex-start;
+  background:var(--mar);border:1px solid transparent;border-left:3px solid var(--bugan);
+  color:var(--cal);border-radius:3px;padding:12px 14px;cursor:pointer;
+  font:inherit;text-align:left;
+}
+.ficha:hover,.ficha:focus-visible{background:var(--mar-alto);border-color:var(--oro);border-left-color:var(--oro)}
+.ficha b{font-weight:600;letter-spacing:.02em}
+.ficha small{color:var(--cal-tenue);font-size:13px}
+
+/* ---------- escenas ---------- */
+.escenas{display:flex;flex-direction:column;gap:8px;margin-bottom:22px}
+.escena{
+  display:flex;gap:14px;align-items:baseline;width:100%;
+  background:var(--mar);border:1px solid transparent;border-radius:3px;
+  padding:12px 14px;cursor:pointer;color:var(--cal);font:inherit;text-align:left;
+}
+.escena:hover,.escena:focus-visible{background:var(--mar-alto);border-color:var(--oro)}
+.escena .num{font-family:var(--serif);font-size:22px;color:var(--oro);min-width:34px}
+.escena .desc{flex:1}
+.escena .desc small{display:block;color:var(--cal-tenue);font-size:13px}
+.escena.todas .num{font-size:15px;font-style:italic}
+
+.opciones-previas{display:flex;flex-wrap:wrap;gap:18px;margin:0 0 22px;font-size:15px}
+.opciones-previas label{display:flex;gap:8px;align-items:center;color:var(--cal-tenue);cursor:pointer}
+input[type=checkbox]{accent-color:var(--bugan);width:17px;height:17px}
+
+/* ---------- práctica ---------- */
+.barra{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;color:var(--cal-tenue);margin-bottom:6px}
+.progreso{height:3px;background:rgba(255,255,255,.12);border-radius:2px;overflow:hidden;margin-bottom:26px}
+.progreso i{display:block;height:100%;background:var(--oro);width:0;transition:width .25s ease}
+@media (prefers-reduced-motion:reduce){.progreso i{transition:none}}
+
+.contexto{border-left:2px solid rgba(255,255,255,.15);padding-left:16px;margin-bottom:24px}
+.replica{margin:0 0 12px}
+.replica .quien{color:var(--oro);font-size:13px;letter-spacing:.06em;font-weight:600}
+.replica .dice{margin:2px 0 0;white-space:pre-line;color:var(--cal-tenue)}
+.replica.acot .dice{font-style:italic;font-size:14px;opacity:.75}
+.replica .cancion{color:var(--bugan);font-size:12px;font-style:italic;margin-left:8px;letter-spacing:.04em}
+
+.consigna{font-family:var(--serif);font-size:19px;margin:0 0 14px}
+.consigna em{color:var(--bugan);font-style:normal}
+
+.lista-op{display:flex;flex-direction:column;gap:9px}
+.op{
+  background:var(--mar);border:1px solid rgba(255,255,255,.08);border-radius:3px;
+  color:var(--cal);font:inherit;text-align:left;padding:13px 15px;cursor:pointer;
+  white-space:pre-line;max-height:38vh;overflow:auto;
+}
+.op:hover:not(:disabled),.op:focus-visible{border-color:var(--oro)}
+.op:disabled{cursor:default}
+.op.bien{border-color:var(--egeo);background:rgba(91,215,196,.14);box-shadow:0 0 0 1px var(--egeo)}
+.op.mal{border-color:var(--coral);background:rgba(255,122,102,.12)}
+.op.apagada{opacity:.45}
+
+.veredicto{margin:20px 0 0;font-size:15px}
+.veredicto.bien{color:var(--egeo)}
+.veredicto.mal{color:var(--coral)}
+
+.acciones{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+button.principal{
+  background:var(--oro);color:#22180A;border:none;border-radius:3px;
+  padding:12px 22px;font:inherit;font-weight:600;cursor:pointer;
+}
+button.principal:hover,button.principal:focus-visible{background:#FFD470}
+button.secundaria{
+  background:none;color:var(--cal-tenue);border:1px solid rgba(255,255,255,.22);
+  border-radius:3px;padding:12px 18px;font:inherit;cursor:pointer;
+}
+button.secundaria:hover,button.secundaria:focus-visible{color:var(--cal);border-color:var(--cal)}
+:focus-visible{outline:2px solid var(--oro);outline-offset:2px}
+
+/* ---------- resumen ---------- */
+.puntaje{font-family:var(--serif);font-size:56px;color:var(--oro);margin:6px 0 0;line-height:1}
+.fallos{margin:26px 0 0;border-top:1px solid rgba(255,255,255,.14);padding-top:18px}
+.fallos h3{font-family:var(--serif);font-weight:400;font-size:19px;margin:0 0 12px}
+.fallo{margin:0 0 16px;padding-left:14px;border-left:2px solid var(--coral)}
+.fallo p{margin:0;white-space:pre-line}
+.fallo small{color:var(--cal-tenue);font-size:13px}
+
+/* ---------- lectura ---------- */
+.lectura .replica{margin-bottom:16px}
+.lectura .replica .dice{color:var(--cal)}
+.lectura .mio{border-left:3px solid var(--bugan);padding-left:14px;margin-left:-17px}
+.lectura .mio .quien{color:var(--bugan)}
+
+
+/* ---------- voz ---------- */
+.aviso-voz{background:rgba(255,122,102,.12);border-left:3px solid var(--coral);padding:12px 14px;margin:0 0 20px;font-size:14px;color:var(--cal)}
+.panel-voces{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+.fila-voz{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--mar);border-radius:3px;padding:11px 14px}
+.fila-voz b{min-width:116px;font-weight:600;letter-spacing:.02em;font-size:14px}
+.fila-voz select{
+  flex:1;min-width:170px;background:var(--noche);color:var(--cal);font:inherit;font-size:14px;
+  border:1px solid rgba(255,255,255,.22);border-radius:3px;padding:7px 9px;
+}
+.fila-voz .tono{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--cal-tenue)}
+.fila-voz input[type=range]{width:92px;accent-color:var(--bugan)}
+.fila-voz button{background:none;border:1px solid rgba(255,255,255,.22);color:var(--cal-tenue);border-radius:3px;padding:7px 12px;font:inherit;font-size:14px;cursor:pointer}
+.fila-voz button:hover,.fila-voz button:focus-visible{color:var(--cal);border-color:var(--cal)}
+
+.audio-fila{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 20px}
+button.sonido{
+  background:none;border:1px solid rgba(242,193,78,.5);color:var(--oro);border-radius:3px;
+  padding:9px 14px;font:inherit;font-size:14px;cursor:pointer;
+}
+button.sonido:hover,button.sonido:focus-visible{background:rgba(242,193,78,.14)}
+button.sonido[aria-pressed=true]{
+  background:var(--oro);border-color:var(--oro);color:#22180A;font-weight:600;
+}
+button.sonido[aria-pressed=true]::before{content:"● ";font-size:11px;vertical-align:1px}
+.modo-dicho{font-size:14px;color:var(--cal-tenue);margin:-10px 0 18px}
+
+/* ---------- micrófono ---------- */
+.mic-caja{margin:18px 0 0;padding:14px 16px;background:var(--mar);border-radius:3px;border-left:3px solid var(--bugan)}
+.mic-estado{font-size:14px;color:var(--cal-tenue);margin:0 0 8px}
+.mic-vivo{font-family:var(--serif);font-size:18px;margin:0;min-height:1.4em;white-space:pre-line}
+.mic-punto{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--bugan);margin-right:7px;vertical-align:1px;animation:late 1.1s ease-in-out infinite}
+@keyframes late{0%,100%{opacity:1}50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.mic-punto{animation:none}}
+.pct{font-family:var(--serif);font-size:40px;line-height:1;margin:0 0 4px}
+.pct.alto{color:var(--egeo)}
+.pct.medio{color:var(--oro)}
+.pct.bajo{color:var(--coral)}
+.diff{margin:10px 0 0;font-size:16px;line-height:1.6}
+.diff .falta{color:var(--coral);text-decoration:line-through;text-decoration-thickness:1px}
+.diff .sobra{color:var(--oro);font-style:italic}
+.diff h4{font-family:var(--sans);font-size:12px;letter-spacing:.06em;color:var(--cal-tenue);margin:12px 0 4px;font-weight:600}
+.replica.sonando{background:rgba(242,193,78,.1);border-radius:3px;margin-left:-8px;padding-left:8px}
+
+/* ---------- ensayo hablado ---------- */
+.escenario{min-height:200px;display:flex;flex-direction:column;justify-content:center;
+  border-top:1px solid rgba(255,255,255,.14);border-bottom:1px solid rgba(255,255,255,.14);
+  padding:24px 0;margin:10px 0 20px}
+.escenario .quien{color:var(--oro);font-size:13px;letter-spacing:.06em;font-weight:600;margin-bottom:8px}
+.escenario .dice{font-family:var(--serif);font-size:21px;line-height:1.45;white-space:pre-line;margin:0}
+.escenario.acot .dice{font-size:16px;font-style:italic;color:var(--cal-tenue);font-family:var(--sans)}
+.escenario.turno .quien,.escenario.turno .dice{color:var(--bugan)}
+.escenario .oculto{color:var(--cal-tenue);font-style:italic;font-size:16px;font-family:var(--sans)}
+
+
+.rastro .atras{
+  border:1px solid rgba(255,255,255,.25);border-radius:3px;padding:5px 11px;
+  color:var(--cal);text-decoration:none;
+}
+.rastro .atras:hover{border-color:var(--oro);color:var(--oro)}
+.nota{font-size:13px;color:var(--cal-tenue);margin:0 0 20px;line-height:1.5}
+.nota b{color:var(--cal);font-weight:600}
+button.enlace{
+  background:none;border:none;padding:0;margin:0;font:inherit;cursor:pointer;
+  color:var(--bugan);text-decoration:underline;text-underline-offset:3px;
+}
+.fila-voz .marca{font-size:12px;color:var(--egeo)}
+.global-voz{display:flex;flex-wrap:wrap;gap:12px;align-items:center;background:var(--mar);border-radius:3px;padding:12px 14px;margin-bottom:16px;font-size:14px}
+.global-voz input[type=range]{width:140px;accent-color:var(--oro)}
+
+.pie{margin-top:44px;padding-top:16px;border-top:1px solid rgba(255,255,255,.12);color:var(--cal-tenue);font-size:13px}
+
+/* ---------- aviso de versión nueva ---------- */
+.aviso-nueva{
+  position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));transform:translateX(-50%);
+  width:calc(100% - 32px);max-width:640px;z-index:10;
+  display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;
+  background:var(--mar-alto);border:1px solid var(--oro);border-left:3px solid var(--oro);border-radius:3px;
+  padding:12px 14px;box-shadow:0 8px 28px rgba(0,0,0,.45);font-size:15px;
+}
+.aviso-nueva[hidden]{display:none}
+.aviso-nueva .acciones{margin:0}
+.aviso-nueva button.principal,.aviso-nueva button.secundaria{padding:9px 16px}
+</style>
+</head>
+<body>
+<div class="hoja">
+  <header class="marquesina">
+    <h1>Mamma Mia</h1>
+    <p>Ensayá tu letra escena por escena</p>
+  </header>
+  <nav class="rastro" id="rastro"></nav>
+  <main id="app"></main>
+  <p class="pie">Instalala desde el menú del navegador ("Instalar app" o "Agregar a inicio"): después funciona sin internet. Tus ajustes quedan guardados en este dispositivo.</p>
+</div>
+<div class="aviso-nueva" id="aviso-nueva" role="status" hidden>
+  <span>Hay una versión nueva del guion.</span>
+  <span class="acciones">
+    <button class="principal" id="btn-actualizar">Actualizar</button>
+    <button class="secundaria" id="btn-despues">Después</button>
+  </span>
+</div>
+<script src="guion.js"></script>
+<script>
+
+const app = document.getElementById("app");
+const rastro = document.getElementById("rastro");
+
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const quienes = l => l.ps || (l.p ? [l.p] : []);
+const esReplica = l => !l.a;
+
+let estado = {
+  pj:null, escena:null, canciones:true, desordenar:false, voz:true, modo:"quiz",
+  items:[], i:0, aciertos:0, errores:[], respondida:false
+};
+
+/* ============================================================
+   AJUSTES GUARDADOS en el dispositivo (localStorage)
+   ============================================================ */
+const CLAVE_AJUSTES = "mamma-mia-ajustes";
+
+function leerAjustes(){
+  try {
+    const a = JSON.parse(localStorage.getItem(CLAVE_AJUSTES) || "{}");
+    return (a && typeof a === "object") ? a : {};
+  } catch(e){ return {}; }
+}
+const AJUSTES = leerAjustes();
+
+if (AJUSTES.practica){
+  const g = AJUSTES.practica;
+  if (typeof g.canciones === "boolean") estado.canciones = g.canciones;
+  if (typeof g.desordenar === "boolean") estado.desordenar = g.desordenar;
+  if (typeof g.voz === "boolean") estado.voz = g.voz;
+  if (g.modo === "quiz" || g.modo === "hablado") estado.modo = g.modo;
+}
+
+/* se llama cada vez que cambia una opción */
+function guardarAjustes(){
+  const datos = {
+    v: 1,
+    practica: {canciones:estado.canciones, desordenar:estado.desordenar, voz:estado.voz, modo:estado.modo},
+    mic: !!MIC.activo,
+    voz: {vel:VOZ.vel, tonoVariado:VOZ.tonoVariado, soloLocales:VOZ.soloLocales, elegido:VOZ.elegido}
+  };
+  try { localStorage.setItem(CLAVE_AJUSTES, JSON.stringify(datos)); } catch(e){}
+}
+
+/* ============================================================
+   VOZ
+   ============================================================ */
+const PERFIL = {
+  SOPHIE:{tono:1.12, vel:1.02, fem:true},
+  DONNA:{tono:1.0, vel:1, fem:true},
+  TANYA:{tono:0.92, vel:0.97, fem:true},
+  ROSIE:{tono:1.07, vel:1.05, fem:true},
+  ALI:{tono:1.16, vel:1.05, fem:true},
+  LISA:{tono:1.1, vel:1.03, fem:true},
+  SAM:{tono:0.84, vel:0.98, fem:false},
+  HARRY:{tono:0.96, vel:1, fem:false},
+  BILL:{tono:0.88, vel:0.96, fem:false},
+  SKY:{tono:0.93, vel:1.02, fem:false},
+  PEPPER:{tono:1.02, vel:1.06, fem:false},
+  EDDIE:{tono:0.9, vel:1.04, fem:false},
+  "PADRE ALEXANDRIO":{tono:0.8, vel:0.9, fem:false},
+  CHICAS:{tono:1.1, vel:1.02, fem:true},
+  ELENCO:{tono:1, vel:1, fem:true},
+  TODOS:{tono:1, vel:1, fem:false},
+  NARRADOR:{tono:1, vel:1.02, fem:true}
+};
+const PISTAS_FEM = ["monica","mónica","paulina","helena","laura","sabina","elvira","lucia","lucía","esperanza","marisol","camila","isabela","salome","salomé","catalina","sofia","sofía","elena","carmen","penelope","penélope","ximena","dalia","valentina","maria","maría","female","mujer","femenino","zira","sara","renata","dora","anna","eva","naia","triana","estrella"];
+const PISTAS_MASC = ["jorge","diego","pablo","carlos","juan","enrique","miguel","alvaro","álvaro","gonzalo","andres","andrés","liberto","javier","felipe","raul","raúl","luciano","mateo","tomas","tomás","arnau","dario","darío","male","hombre","masculino","pelayo","nestor","néstor","yago","gerardo"];
+
+const VOZ = {
+  soporta: typeof window.speechSynthesis !== "undefined",
+  voces: [], config: {}, cargadas: false, vel: 1, seq: 0, cadena: 0,
+  tonoVariado: false,   // cambiar el tono distingue personajes pero suena más artificial
+  soloLocales: false,   // true = descartar las voces que necesitan internet (lo elige el usuario)
+  sinRed: false,        // true = falló una voz de internet en esta sesión; no se guarda
+  elegido: {}           // lo que el usuario cambió a mano: {PJ:{voz:"nombre", tono:1.0}}
+};
+
+if (AJUSTES.voz){
+  const g = AJUSTES.voz;
+  if (typeof g.vel === "number" && g.vel >= 0.5 && g.vel <= 2) VOZ.vel = g.vel;
+  if (typeof g.tonoVariado === "boolean") VOZ.tonoVariado = g.tonoVariado;
+  if (typeof g.soloLocales === "boolean") VOZ.soloLocales = g.soloLocales;
+  if (g.elegido && typeof g.elegido === "object"){
+    Object.keys(g.elegido).forEach(pj => {
+      const e = g.elegido[pj] || {}, ok = {};
+      if (typeof e.voz === "string" && e.voz) ok.voz = e.voz;
+      if (typeof e.tono === "number") ok.tono = e.tono;
+      if (Object.keys(ok).length) VOZ.elegido[pj] = ok;
+    });
+  }
+}
+
+function clasificar(v){
+  const n = (v.name + " " + (v.voiceURI || "")).toLowerCase();
+  if (PISTAS_FEM.some(p => n.includes(p))) return "f";
+  if (PISTAS_MASC.some(p => n.includes(p))) return "m";
+  return "?";
+}
+
+/* cuanto más alto, mejor suena y mejor anda sin internet */
+function puntaje(v){
+  const n = (v.name + " " + (v.voiceURI || "")).toLowerCase();
+  let p = 0;
+  if (/natural|neural/.test(n)) p += 8;
+  if (/premium|enhanced|mejorad/.test(n)) p += 6;
+  if (/siri/.test(n)) p += 3;
+  if (/google/.test(n)) p += 2;
+  if (/compact|eloquence|espeak|pico|novelty/.test(n)) p -= 8;
+  if (v.localService) p += 5;
+  if (/^es[-_](AR|419|MX|US)/i.test(v.lang)) p += 2;
+  if (/^es/i.test(v.lang)) p += 2;
+  if ((VOZ.soloLocales || VOZ.sinRed) && v.localService === false) p -= 30;
+  return p;
+}
+
+/* si al personaje le tocó una voz del otro género, se compensa con el tono:
+   muchos equipos sólo traen una voz femenina en español */
+function generoDe(pj){ return (PERFIL[pj] || PERFIL.NARRADOR).fem ? "f" : "m"; }
+
+function generoVozDe(nombre){
+  const v = VOZ.voces.find(x => x.name === nombre);
+  if (!v) return "?";
+  return clasificar(v);
+}
+
+function cargarVoces(){
+  if (!VOZ.soporta) return;
+  const todas = speechSynthesis.getVoices();
+  if (!todas.length) return;
+  VOZ.voces = todas.slice().sort((a,b) => puntaje(b) - puntaje(a));
+  const esp = VOZ.voces.filter(v => /^es/i.test(v.lang));
+  const base = esp.length ? esp : VOZ.voces;
+  const fem = base.filter(v => clasificar(v) === "f");
+  const masc = base.filter(v => clasificar(v) === "m");
+  let cf = 0, cm = 0, cx = 0;
+  VOZ.config = {};
+  Object.keys(PERFIL).forEach(pj => {
+    const p = PERFIL[pj];
+    let v;
+    if (p.fem && fem.length) v = fem[cf++ % fem.length];
+    else if (!p.fem && masc.length) v = masc[cm++ % masc.length];
+    else v = base[cx++ % base.length];
+    VOZ.config[pj] = {voz:v ? v.name : null, tono:p.tono, vel:p.vel};
+  });
+  VOZ.cargadas = true;
+}
+
+/* la voz que eligió el usuario, si existe en este dispositivo; si no, la automática */
+function vozElegidaDe(pj){
+  const e = VOZ.elegido[pj];
+  if (!e || !e.voz) return null;
+  const v = VOZ.voces.find(x => x.name === e.voz);
+  if (!v) return null;
+  if (VOZ.sinRed && v.localService === false) return null;   // sin conexión no suena
+  return v.name;
+}
+
+function elegir(pj, cambios){
+  VOZ.elegido[pj] = Object.assign({}, VOZ.elegido[pj], cambios);
+  guardarAjustes();
+}
+if (VOZ.soporta){
+  cargarVoces();
+  speechSynthesis.addEventListener("voiceschanged", cargarVoces);
+}
+
+function cfgDe(pj){
+  const c = VOZ.config[pj] || VOZ.config.NARRADOR || {tono:1, vel:1, voz:null};
+  const perfil = PERFIL[pj] || PERFIL.NARRADOR;
+  const elegido = VOZ.elegido[pj] || {};
+  const voz = vozElegidaDe(pj) || c.voz;
+  // el cambio de tono es lo que más "robotiza" una voz: sólo se aplica si hace falta
+  let tono = VOZ.tonoVariado ? perfil.tono : 1;
+  if (!VOZ.tonoVariado){
+    const quiere = generoDe(pj);
+    let tiene = generoVozDe(voz);
+    if (tiene === "?") tiene = "f";   // casi todas las voces genéricas en español son femeninas
+    if (tiene !== quiere) tono = quiere === "m" ? 0.72 : 1.3;
+  }
+  if (typeof elegido.tono === "number") tono = elegido.tono;
+  return {voz:voz, tono:tono, vel:c.vel || 1};
+}
+
+/* los lectores de voz leen en voz alta los signos sueltos ("¡...", "?!", "…"),
+   así que dejamos una puntuación simple antes de mandar el texto */
+function normalizarPuntuacion(t){
+  return t
+    .replace(/[«»""'']/g, " ")
+    .replace(/…/g, ".")
+    // "..." se leía "punto punto punto": queda coma si la frase sigue, punto si cierra
+    .replace(/\.{2,}\s*/g, (m, off, str) =>
+      /[a-záéíóúñ]/.test(str.slice(off + m.length, off + m.length + 1)) ? ", " : ". ")
+    .replace(/!{2,}/g, "!")
+    .replace(/\?{2,}/g, "?")
+    .replace(/¡{2,}/g, "¡")
+    .replace(/¿{2,}/g, "¿")
+    .replace(/\?\s*!|!\s*\?/g, "?")    // "¿Qué?!" -> "¿Qué?"
+    .replace(/[¡¿]+(?=[¡¿])/g, "")     // "¡¿Qué?" -> "¿Qué?"
+    .replace(/[¡¿]+(?![\wáéíóúüñÁÉÍÓÚÜÑ])/g, "")   // signo de apertura sin palabra detrás
+    .replace(/[.,;:]+(?=[!?])/g, "")   // "¡Donna.!" -> "¡Donna!"
+    .replace(/\s+[-–—]+\s+/g, ", ")
+    .replace(/([.,;:!?])\1+/g, "$1")
+    .replace(/\s+([.,;:!?])/g, "$1")
+    .replace(/^[\s.,;:!?]+/, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
+const TIENE_LETRAS = /[a-záéíóúüñ]/i;
+
+/* saca las acotaciones entre paréntesis y arma una frase corrida:
+   los versos sueltos se unen con coma para que no suene entrecortado */
+function limpiarTexto(t){
+  const lineas = t.replace(/\([^)]*\)/g, " ")
+    .split(/\n/)
+    .map(x => normalizarPuntuacion(x))
+    .filter(x => TIENE_LETRAS.test(x));
+  return normalizarPuntuacion(
+    lineas.map((l,i) => (i === lineas.length-1 || /[.,;:!?]$/.test(l)) ? l : l + ",").join(" ")
+  );
+}
+
+/* corta sólo en fin de frase, nunca en medio */
+function trozos(t){
+  if (!t || !TIENE_LETRAS.test(t)) return [];
+  if (t.length <= 240) return [t];
+  const frases = t.match(/[^.!?…]+[.!?…]*\s*/g) || [t];
+  const out = [];
+  let buf = "";
+  frases.forEach(f => {
+    if ((buf + f).length > 240 && buf){ out.push(buf.trim()); buf = f; }
+    else buf += f;
+  });
+  if (buf.trim()) out.push(buf.trim());
+  return out.filter(x => TIENE_LETRAS.test(x));
+}
+
+function detener(){
+  VOZ.seq++;
+  if (VOZ.soporta){ try { speechSynthesis.cancel(); } catch(e){} }
+}
+
+function hablar(texto, pj, alTerminar, reintento){
+  if (!VOZ.soporta){ alTerminar && alTerminar(); return; }
+  if (!VOZ.cargadas) cargarVoces();
+  detener();
+  const mio = VOZ.seq;
+  let cerrado = false;
+  const cerrar = () => {
+    if (cerrado || mio !== VOZ.seq) return;
+    cerrado = true;
+    alTerminar && alTerminar();
+  };
+
+  const cfg = cfgDe(pj);
+  const voz = VOZ.voces.find(v => v.name === cfg.voz);
+  const partes = trozos(limpiarTexto(texto));
+  if (!partes.length){ setTimeout(cerrar, 700); return; }
+
+  const vel = Math.max(0.5, Math.min(1.8, (cfg.vel || 1) * VOZ.vel));
+  const letras = partes.reduce((a,b) => a + b.length, 0);
+  let vigia = null;
+
+  // Chrome necesita un respiro entre cancel() y speak(), si no se come la frase
+  setTimeout(() => {
+    if (mio !== VOZ.seq) return;
+    partes.forEach((p,i) => {
+      const u = new SpeechSynthesisUtterance(p);
+      if (voz){ u.voice = voz; u.lang = voz.lang; } else u.lang = "es-AR";
+      u.pitch = cfg.tono;
+      u.rate = vel;
+      if (i === partes.length - 1){
+        u.onend = () => { clearTimeout(vigia); cerrar(); };
+        u.onerror = () => {
+          clearTimeout(vigia);
+          // una voz de internet sin conexión falla en silencio: pasamos a las locales
+          if (!reintento && voz && voz.localService === false){
+            cerrado = true;
+            VOZ.sinRed = true;
+            cargarVoces();
+            hablar(texto, pj, alTerminar, true);
+            return;
+          }
+          cerrar();
+        };
+      }
+      try { speechSynthesis.speak(u); } catch(e){}
+    });
+    // si el navegador se olvida de avisar que terminó, seguimos igual
+    vigia = setTimeout(cerrar, 2500 + letras * 95 / vel);
+  }, 140);
+}
+
+function pararVoz(){ VOZ.cadena++; detener(); cortarMic(); }
+
+function marcarSonando(k){
+  app.querySelectorAll(".contexto .replica").forEach(el => el.classList.remove("sonando"));
+  const el = document.getElementById("ctx-" + k);
+  if (el) el.classList.add("sonando");
+}
+
+/* lee seguidas todas las réplicas que van desde tu línea anterior hasta ésta */
+function hablarCadena(lista, alTerminar){
+  const id = ++VOZ.cadena;
+  const paso = i => {
+    if (id !== VOZ.cadena) return;
+    if (i >= lista.length){ marcarSonando(-1); alTerminar && alTerminar(); return; }
+    marcarSonando(lista[i].k);
+    hablar(lista[i].l.t, quienes(lista[i].l)[0], () => {
+      if (id !== VOZ.cadena) return;
+      setTimeout(() => paso(i+1), 240);
+    });
+  };
+  paso(0);
+}
+
+/* ============================================================
+   MICRÓFONO
+   ============================================================ */
+/* Chrome en Android no da permisos de micrófono a archivos locales: no hay
+   candado ni entrada en Ajustes porque file:// no tiene origen. Así que en el
+   celular, abierto como archivo, ni ofrecemos la opción. */
+function esCelular(){
+  const d = navigator.userAgentData;
+  if (d && typeof d.mobile === "boolean") return d.mobile;
+  const ua = navigator.userAgent || "";
+  if (/Android|iPhone|iPad|iPod|Windows Phone|Mobile|Silk|Kindle/i.test(ua)) return true;
+  // iPad con "solicitar sitio de escritorio" se hace pasar por Mac
+  return /Macintosh/.test(ua) && navigator.maxTouchPoints > 1;
+}
+
+const MIC = {
+  soporta: false, activo: false, rec: null, escuchando: false,
+  motor: !!(window.SpeechRecognition || window.webkitSpeechRecognition),
+  celular: esCelular(),
+  archivoLocal: location.protocol === "file:" || location.protocol === "content:",
+  bloqueado: false
+};
+MIC.bloqueado = MIC.motor && MIC.celular && MIC.archivoLocal;
+MIC.soporta = MIC.motor && !MIC.bloqueado;
+MIC.activo = AJUSTES.mic === true && MIC.soporta;
+
+function escuchar(onParcial, onFinal, onError){
+  const R = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!R){ onError && onError("sin-soporte"); return; }
+  pararMic();
+  let r;
+  try { r = new R(); } catch(e){ onError && onError("sin-soporte"); return; }
+  r.lang = "es-AR";
+  r.interimResults = true;
+  r.continuous = false;
+  r.maxAlternatives = 1;
+  let final = "";
+  r.onresult = ev => {
+    let parcial = "";
+    for (let i = ev.resultIndex; i < ev.results.length; i++){
+      const res = ev.results[i];
+      if (res.isFinal) final += res[0].transcript + " ";
+      else parcial += res[0].transcript;
+    }
+    onParcial && onParcial((final + parcial).trim());
+  };
+  r.onerror = ev => { MIC.escuchando = false; onError && onError(ev.error || "error"); };
+  r.onend = () => {
+    if (!MIC.escuchando) return;
+    MIC.escuchando = false; MIC.rec = null;
+    onFinal && onFinal(final.trim());
+  };
+  MIC.rec = r; MIC.escuchando = true;
+  try { r.start(); } catch(e){ MIC.escuchando = false; onError && onError("start"); }
+}
+
+function pararMic(){
+  if (MIC.rec){ try { MIC.rec.stop(); } catch(e){} }
+}
+
+function cortarMic(){
+  MIC.escuchando = false;
+  if (MIC.rec){ try { MIC.rec.abort(); } catch(e){} MIC.rec = null; }
+}
+
+/* ---------- comparar lo dicho con la línea del guion ---------- */
+function palabras(t){
+  return t.replace(/\([^)]*\)/g, " ")
+    .toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9ñ\s]/g, " ")
+    .split(/\s+/).filter(Boolean);
+}
+
+/* subsecuencia común más larga, con marcas de qué palabra entró */
+function comparar(dicho, esperado){
+  const A = palabras(dicho), B = palabras(esperado);
+  const n = A.length, m = B.length;
+  const dp = Array.from({length:n+1}, () => new Uint16Array(m+1));
+  for (let i=n-1;i>=0;i--)
+    for (let j=m-1;j>=0;j--)
+      dp[i][j] = A[i] === B[j] ? dp[i+1][j+1] + 1 : Math.max(dp[i+1][j], dp[i][j+1]);
+  const okA = new Array(n).fill(false), okB = new Array(m).fill(false);
+  let i=0, j=0;
+  while (i<n && j<m){
+    if (A[i] === B[j]){ okA[i] = okB[j] = true; i++; j++; }
+    else if (dp[i+1][j] >= dp[i][j+1]) i++;
+    else j++;
+  }
+  const comunes = dp[0][0];
+  const pct = (n+m) ? Math.round(200 * comunes / (n+m)) : 0;
+  return {pct, A, B, okA, okB};
+}
+
+function htmlDiff(r){
+  const dicho = r.A.map((w,i) => r.okA[i] ? esc(w) : `<span class="sobra">${esc(w)}</span>`).join(" ");
+  const guion = r.B.map((w,i) => r.okB[i] ? esc(w) : `<span class="falta">${esc(w)}</span>`).join(" ");
+  return `<div class="diff">
+    <h4>Dijiste</h4><div>${dicho || "<span class=\"falta\">(nada)</span>"}</div>
+    <h4>Dice el guion</h4><div>${guion}</div>
+  </div>`;
+}
+
+/* ============================================================
+   índice del guion
+   ============================================================ */
+function lineasDe(pj, conCanciones, escIdx){
+  const out = [];
+  GUION.forEach((e,ei) => {
+    if (escIdx !== null && escIdx !== undefined && ei !== escIdx) return;
+    e.lineas.forEach((l,li) => {
+      if (!esReplica(l)) return;
+      if (!quienes(l).includes(pj)) return;
+      if (!conCanciones && l.cancion) return;
+      out.push({ei,li});
+    });
+  });
+  return out;
+}
+
+const todasLasReplicas = [];
+GUION.forEach(e => e.lineas.forEach(l => { if (esReplica(l)) todasLasReplicas.push(l); }));
+
+function mezclar(a){
+  const b = a.slice();
+  for (let i=b.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]]; }
+  return b;
+}
+
+function unicos(pool, excluidos){
+  const vistos = new Set(excluidos);
+  const out = [];
+  for (const l of pool){ if (vistos.has(l.t)) continue; vistos.add(l.t); out.push(l); }
+  return out;
+}
+
+function distractores(correcta, pj, n){
+  const mismoTipo = l => (!!l.cancion) === (!!correcta.cancion);
+  const porCercania = a => a.slice().sort((x,y) =>
+    Math.abs(x.t.length - correcta.t.length) - Math.abs(y.t.length - correcta.t.length));
+  const res = [];
+  const agregar = pool => {
+    if (res.length >= n) return;
+    const excluidos = [correcta.t].concat(res.map(r => r.t));
+    const cercanos = porCercania(unicos(pool, excluidos)).slice(0, Math.max(n*4, 12));
+    for (const l of mezclar(cercanos)) if (res.length < n) res.push(l);
+  };
+  agregar(todasLasReplicas.filter(l => quienes(l).includes(pj) && mismoTipo(l)));
+  agregar(todasLasReplicas.filter(l => quienes(l).includes(pj)));
+  agregar(todasLasReplicas.filter(mismoTipo));
+  agregar(todasLasReplicas);
+  return res;
+}
+
+function htmlReplica(l, clase, id){
+  const attr = id ? ` id="${esc(id)}"` : "";
+  if (!esReplica(l)) return `<div class="replica acot ${clase||""}"${attr}><p class="dice">${esc(l.a)}</p></div>`;
+  const cancion = l.cancion ? `<span class="cancion">canta · ${esc(l.cancion)}</span>` : "";
+  return `<div class="replica ${clase||""}"${attr}>
+    <div class="quien">${esc(l.p)}${cancion}</div>
+    <p class="dice">${esc(l.t)}</p>
+  </div>`;
+}
+
+/* ============================================================
+   navegación: el botón atrás del celular vuelve acá adentro
+   ============================================================ */
+const pila = [{v:"elenco"}];
+let usaHistoria = true;
+
+function empujar(){
+  try { history.pushState({i:pila.length-1}, ""); }
+  catch(e){ usaHistoria = false; }
+}
+
+function ir(v, opts){
+  pararVoz(); ensayo = null;
+  pila.push(Object.assign({v}, opts || {}));
+  empujar();
+  pintar();
+}
+
+function reemplazar(v, opts){
+  pila[pila.length-1] = Object.assign({v}, opts || {});
+  pintar();
+}
+
+function atras(){
+  if (usaHistoria && pila.length > 1) history.back();
+  else if (pila.length > 1){ pararVoz(); ensayo = null; pila.pop(); pintar(); }
+}
+
+function volverHasta(v){
+  const i = pila.map(p => p.v).lastIndexOf(v);
+  if (i < 0) return ir(v);
+  const saltos = pila.length - 1 - i;
+  if (saltos <= 0){ pararVoz(); ensayo = null; pintar(); return; }
+  if (usaHistoria){ history.go(-saltos); return; }
+  pararVoz(); ensayo = null;
+  pila.length = i + 1;
+  pintar();
+}
+
+window.addEventListener("popstate", ev => {
+  pararVoz(); ensayo = null;
+  const destino = ev.state && typeof ev.state.i === "number" ? ev.state.i + 1 : pila.length - 1;
+  pila.length = Math.max(1, Math.min(pila.length, destino));
+  pintar();
+});
+
+function pintar(){
+  const d = pila[pila.length-1];
+  window.scrollTo(0,0);
+  switch (d.v){
+    case "escenas": pintarEscenas(); break;
+    case "voces":   pintarVoces(); break;
+    case "quiz":    pintarQuiz(); break;
+    case "resumen": pintarResumen(); break;
+    case "hablado": pintarHablado(); break;
+    case "lectura": pintarLectura(d.escena); break;
+    default:        pintarElenco();
+  }
+}
+
+function pintarRastro(paso){
+  const partes = [];
+  if (pila.length > 1) partes.push(`<button class="atras" data-ir="atras">← Atrás</button>`);
+  if (paso === "elenco") partes.push(`<span>Elegí tu personaje</span>`);
+  else {
+    partes.push(`<button data-ir="elenco">Personaje</button>`);
+    partes.push(`<span class="sep">›</span>`);
+    if (paso === "escenas") partes.push(`<span>${esc(estado.pj)}</span>`);
+    else {
+      partes.push(`<button data-ir="escenas">${esc(estado.pj)}</button>`);
+      partes.push(`<span class="sep">›</span>`);
+      partes.push(`<span>${estado.escena === null ? "Toda la obra" : "Escena " + esc(GUION[estado.escena].n)}</span>`);
+    }
+  }
+  rastro.innerHTML = partes.join("");
+  rastro.querySelectorAll("button[data-ir]").forEach(b => {
+    b.onclick = () => b.dataset.ir === "atras" ? atras() : volverHasta(b.dataset.ir);
+  });
+}
+
+/* ============================================================
+   pantalla 1: elenco
+   ============================================================ */
+function pintarElenco(){
+  estado.pj = null; estado.escena = null;
+  pintarRastro("elenco");
+  const fichas = ELENCO.map(pj => {
+    const n = lineasDe(pj, true, null).length;
+    const hablado = lineasDe(pj, false, null).length;
+    const cantado = n - hablado;
+    const detalle = cantado ? `${hablado} habladas · ${cantado} cantadas` : `${hablado} habladas`;
+    return `<button class="ficha" data-pj="${esc(pj)}"><b>${esc(pj)}</b><small>${detalle}</small></button>`;
+  }).join("");
+  app.innerHTML = `<h2>¿A quién hacés?</h2>
+    <p class="ayuda">Elegí tu personaje y después la escena que querés repasar.</p>
+    <div class="elenco">${fichas}</div>`;
+  app.querySelectorAll(".ficha").forEach(b => b.onclick = () => {
+    estado.pj = b.dataset.pj;
+    ir("escenas");
+  });
+}
+
+/* ============================================================
+   pantalla 2: escenas
+   ============================================================ */
+function pintarEscenas(){
+  pintarRastro("escenas");
+  const total = lineasDe(estado.pj, true, null).length;
+  const filas = GUION.map((e,i) => {
+    const n = lineasDe(estado.pj, true, i).length;
+    if (!n) return "";
+    return `<button class="escena" data-esc="${i}">
+      <span class="num">${esc(e.n)}</span>
+      <span class="desc">${esc(e.lugar)}<small>Acto ${e.acto} · ${n} ${n===1?"línea tuya":"líneas tuyas"}</small></span>
+    </button>`;
+  }).join("");
+
+  const sinVoz = !VOZ.soporta ? `<p class="aviso-voz">Este navegador no tiene lector de voz. Probá con Chrome, Edge o Safari para usar el ensayo hablado.</p>` : "";
+
+  app.innerHTML = `<h2>${esc(estado.pj)}</h2>
+    <p class="ayuda">${total} líneas en toda la obra. Elegí cómo y por dónde.</p>
+    ${sinVoz}
+    <div class="audio-fila">
+      <button class="sonido" id="btn-modo-quiz" aria-pressed="${estado.modo==="quiz"}">Opción múltiple</button>
+      <button class="sonido" id="btn-modo-hablado" aria-pressed="${estado.modo==="hablado"}">Ensayo hablado</button>
+      <button class="sonido" id="btn-voces">Ajustar voces</button>
+    </div>
+    <p class="modo-dicho">${estado.modo === "quiz"
+      ? "Elegís tu línea entre cuatro opciones. Tocá una escena para empezar."
+      : "La obra corre sola y se frena en tus líneas. Tocá una escena para empezar."}</p>
+    <div class="opciones-previas">
+      <label><input type="checkbox" id="chk-canciones" ${estado.canciones?"checked":""}> Incluir las canciones</label>
+      <label><input type="checkbox" id="chk-orden" ${estado.desordenar?"checked":""}> Desordenar las líneas</label>
+      <label><input type="checkbox" id="chk-voz" ${estado.voz?"checked":""}> Leer en voz alta</label>
+      ${MIC.soporta ? `<label><input type="checkbox" id="chk-mic" ${MIC.activo?"checked":""}> Escucharme por micrófono (necesita conexión)</label>` : ""}
+    </div>
+    ${MIC.bloqueado ? `<p class="nota">El micrófono no está disponible porque abriste el archivo guardado en el teléfono:
+      Chrome no entrega permisos a archivos locales. Para usarlo, abrí la misma página desde una dirección <b>https</b>
+      o desde <b>localhost</b>. <button class="enlace" id="mic-igual">Mostrar la opción igual</button></p>` : ""}
+    <div class="escenas">
+      <button class="escena todas" data-esc="todas">
+        <span class="num">Todo</span>
+        <span class="desc">La obra entera, de la primera a la última<small>De corrido, en orden de guion</small></span>
+      </button>
+      ${filas}
+    </div>`;
+
+  document.getElementById("chk-canciones").onchange = ev => { estado.canciones = ev.target.checked; guardarAjustes(); pintarEscenas(); };
+  document.getElementById("chk-orden").onchange = ev => { estado.desordenar = ev.target.checked; guardarAjustes(); };
+  document.getElementById("chk-voz").onchange = ev => { estado.voz = ev.target.checked; guardarAjustes(); };
+  const chkMic = document.getElementById("chk-mic");
+  if (chkMic) chkMic.onchange = ev => { MIC.activo = ev.target.checked; guardarAjustes(); };
+  const micIgual = document.getElementById("mic-igual");
+  if (micIgual) micIgual.onclick = () => {
+    MIC.bloqueado = false; MIC.soporta = MIC.motor;
+    pintarEscenas();
+  };
+  document.getElementById("btn-modo-quiz").onclick = () => { estado.modo = "quiz"; guardarAjustes(); pintarEscenas(); };
+  document.getElementById("btn-modo-hablado").onclick = () => { estado.modo = "hablado"; guardarAjustes(); pintarEscenas(); };
+  document.getElementById("btn-voces").onclick = () => ir("voces");
+  app.querySelectorAll(".escena").forEach(b => b.onclick = () => {
+    estado.escena = b.dataset.esc === "todas" ? null : Number(b.dataset.esc);
+    if (estado.modo === "hablado") ir("hablado");
+    else if (prepararQuiz()) ir("quiz");
+  });
+}
+
+/* ============================================================
+   panel de voces
+   ============================================================ */
+function pintarVoces(){
+  pintarRastro("escenas");
+  if (!VOZ.cargadas) cargarVoces();
+  const ayudaVoces = `<p class="nota">
+    Las voces son las que tiene instaladas el dispositivo. Para que suenen naturales conviene bajar las buenas una sola vez.
+    <b>Windows:</b> Configuración › Hora e idioma › Voz › Agregar voces, las que dicen "Natural".
+    <b>iPhone o Mac:</b> Ajustes › Accesibilidad › Contenido hablado › Voces › Español, elegí Premium o Mejorada.
+    <b>Android:</b> Ajustes › Idiomas › Salida de texto a voz › instalar los datos de voz en español.
+    En Windows las voces que de verdad suenan humanas son las "Online (Natural)" de Microsoft y aparecen abriendo la app con <b>Edge</b>, pero necesitan conexión;
+    sin internet, lo mejor instalado suele ser Helena o Sabina, que son las robóticas de siempre.
+    Las que avisan "necesita internet" no sirven para ensayar sin conexión.</p>`;
+
+  if (!VOZ.soporta || !VOZ.voces.length){
+    app.innerHTML = `<h2>Voces</h2>
+      <p class="aviso-voz">No encontré voces instaladas en este dispositivo.</p>${ayudaVoces}
+      <div class="acciones"><button class="principal" id="btn-volver">Volver</button></div>`;
+    document.getElementById("btn-volver").onclick = atras;
+    return;
+  }
+
+  // primero las voces del género del personaje, después el resto
+  const opciones = (v, pj) => {
+    const quiere = generoDe(pj);
+    const orden = VOZ.voces.slice().sort((a,b) => {
+      const ga = clasificar(a) === quiere ? 0 : 1, gb = clasificar(b) === quiere ? 0 : 1;
+      return ga - gb;
+    });
+    return orden.map(x => {
+      const estrella = puntaje(x) >= 9 ? "★ " : "";
+      const sexo = clasificar(x) === "f" ? " · mujer" : clasificar(x) === "m" ? " · hombre" : "";
+      const red = x.localService === false ? " · necesita internet" : "";
+      return `<option value="${esc(x.name)}" ${x.name===v?"selected":""}>${estrella}${esc(x.name)} · ${esc(x.lang)}${sexo}${red}</option>`;
+    }).join("");
+  };
+
+  const filas = ELENCO.map(pj => {
+    const quiere = generoDe(pj) === "m" ? "hombre" : "mujer";
+    return `<div class="fila-voz" data-pj="${esc(pj)}">
+      <b>${esc(pj)}</b><span class="marca">${quiere}</span>
+      <select class="sel-voz">${opciones(cfgDe(pj).voz, pj)}</select>
+      <span class="tono">Tono <input type="range" class="rng-tono" min="0.6" max="1.5" step="0.02" value="${cfgDe(pj).tono}"></span>
+      <button class="probar">Probar</button>
+    </div>`;
+  }).join("");
+
+  app.innerHTML = `<h2>Voces</h2>
+    <p class="ayuda">Una voz por personaje. Las marcadas con ★ son las que mejor suenan de las que tenés.
+      Si no hay voces de hombre instaladas, a Sam, Bill, Harry, Sky, Pepper, Eddie y el Padre se les baja el tono para que no suenen a mujer.</p>
+    <div class="global-voz">
+      <span>Velocidad general</span>
+      <input type="range" id="rng-vel" min="0.7" max="1.4" step="0.05" value="${VOZ.vel}">
+      <span id="vel-val">${VOZ.vel.toFixed(2)}×</span>
+    </div>
+    <div class="opciones-previas">
+      <label><input type="checkbox" id="chk-tono" ${VOZ.tonoVariado?"checked":""}> Cambiar el tono según el personaje (los distingue, pero suena más artificial)</label>
+      <label><input type="checkbox" id="chk-local" ${VOZ.soloLocales?"checked":""}> Usar sólo voces que andan sin internet</label>
+    </div>
+    <div class="panel-voces">${filas}</div>
+    ${ayudaVoces}
+    <div class="acciones">
+      <button class="principal" id="btn-volver">Listo</button>
+      <button class="secundaria" id="btn-restablecer">Restablecer voces</button>
+    </div>`;
+
+  document.getElementById("chk-tono").onchange = ev => {
+    VOZ.tonoVariado = ev.target.checked;
+    guardarAjustes();
+    pintarVoces();
+    hablar("Probando, uno, dos. ¿Así está mejor?", "DONNA");
+  };
+  document.getElementById("chk-local").onchange = ev => {
+    VOZ.soloLocales = ev.target.checked;
+    cargarVoces();
+    guardarAjustes();
+    pintarVoces();
+  };
+  document.getElementById("rng-vel").oninput = ev => {
+    VOZ.vel = Number(ev.target.value);
+    document.getElementById("vel-val").textContent = VOZ.vel.toFixed(2) + "×";
+  };
+  document.getElementById("rng-vel").onchange = guardarAjustes;
+  app.querySelectorAll(".fila-voz").forEach(f => {
+    const pj = f.dataset.pj;
+    f.querySelector(".sel-voz").onchange = ev => {
+      elegir(pj, {voz:ev.target.value});
+      f.querySelector(".rng-tono").value = cfgDe(pj).tono;
+      hablar("Probando, uno, dos. ¿Así está mejor?", pj);
+    };
+    f.querySelector(".rng-tono").onchange = ev => {
+      elegir(pj, {tono:Number(ev.target.value)});
+      hablar("Probando, uno, dos.", pj);
+    };
+    f.querySelector(".probar").onclick = () => hablar("Hola, soy " + pj + ". Vamos de nuevo desde el principio.", pj);
+  });
+  document.getElementById("btn-volver").onclick = atras;
+  document.getElementById("btn-restablecer").onclick = () => {
+    if (!confirm("¿Volver todas las voces, tonos y la velocidad a como venían?")) return;
+    pararVoz();
+    VOZ.elegido = {}; VOZ.vel = 1; VOZ.tonoVariado = false; VOZ.soloLocales = false;
+    cargarVoces();
+    guardarAjustes();
+    pintarVoces();
+  };
+}
+
+/* ============================================================
+   opción múltiple
+   ============================================================ */
+function prepararQuiz(){
+  const items = lineasDe(estado.pj, estado.canciones, estado.escena);
+  if (!items.length){
+    alert("No hay líneas para practicar con esa combinación. Probá incluyendo las canciones.");
+    return false;
+  }
+  estado.items = estado.desordenar ? mezclar(items) : items;
+  estado.i = 0; estado.aciertos = 0; estado.errores = [];
+  return true;
+}
+
+/* todas las réplicas desde tu línea anterior hasta ésta (máximo 4) */
+function cadenaPrevia(escena, li){
+  let ini = 0;
+  for (let k = li-1; k >= 0; k--){
+    const l = escena.lineas[k];
+    if (esReplica(l) && quienes(l).includes(estado.pj)){ ini = k+1; break; }
+  }
+  const arr = [];
+  for (let k = ini; k < li; k++) if (esReplica(escena.lineas[k])) arr.push({k, l:escena.lineas[k]});
+  return arr.slice(-4);
+}
+
+function pintarQuiz(){
+  pararVoz();
+  if (!estado.items.length && !prepararQuiz()) return reemplazar("escenas");
+  if (estado.i >= estado.items.length) return reemplazar("resumen");
+  pintarRastro("practica");
+
+  const {ei,li} = estado.items[estado.i];
+  const escena = GUION[ei];
+  const correcta = escena.lineas[li];
+  const cadena = cadenaPrevia(escena, li);
+  const desde = cadena.length ? cadena[0].k : Math.max(0, li-2);
+
+  let contexto = "";
+  for (let k = desde; k < li; k++) contexto += htmlReplica(escena.lineas[k], "", "ctx-" + k);
+  if (!contexto) contexto = `<div class="replica acot"><p class="dice">Arranca la escena.</p></div>`;
+
+  const ops = mezclar([correcta].concat(distractores(correcta, estado.pj, 3)));
+  const pista = correcta.t.trim().split(/\s+/).slice(0,4).join(" ");
+
+  app.innerHTML = `
+    <div class="barra">
+      <span>Escena ${esc(escena.n)} · ${esc(escena.lugar)}</span>
+      <span>${estado.i+1} de ${estado.items.length} · ${estado.aciertos} bien</span>
+    </div>
+    <div class="progreso"><i style="width:${(estado.i/estado.items.length)*100}%"></i></div>
+    <div class="contexto">${contexto}</div>
+    ${cadena.length && VOZ.soporta ? `<div class="audio-fila"><button class="sonido" id="btn-oir">Escuchar lo anterior</button></div>` : ""}
+    <p class="consigna">¿Qué dice <em>${esc(estado.pj)}</em>${correcta.cancion ? " cantando en «"+esc(correcta.cancion)+"»" : ""}?</p>
+    <div class="lista-op">
+      ${ops.map((o,idx) => `<button class="op" data-idx="${idx}">${esc(o.t)}</button>`).join("")}
+    </div>
+    <div id="veredicto"></div>
+    <div class="acciones">
+      <button class="secundaria" id="btn-pista">Ver las primeras palabras</button>
+      <button class="secundaria" id="btn-salir">Cambiar de escena</button>
+    </div>`;
+
+  estado.respondida = false;
+  const botones = Array.from(app.querySelectorAll(".op"));
+  botones.forEach(b => b.onclick = () => responder(Number(b.dataset.idx), ops, correcta, botones, {ei,li}));
+
+  const oir = document.getElementById("btn-oir");
+  if (oir) oir.onclick = () => hablarCadena(cadena);
+  if (cadena.length && estado.voz && VOZ.soporta) hablarCadena(cadena);
+
+  document.getElementById("btn-pista").onclick = ev => {
+    ev.target.textContent = "Empieza así: " + pista + "…";
+    ev.target.disabled = true;
+  };
+  document.getElementById("btn-salir").onclick = () => volverHasta("escenas");
+}
+
+function responder(idx, ops, correcta, botones, ref){
+  if (estado.respondida) return;
+  estado.respondida = true;
+  pararVoz();
+  const acerto = ops[idx].t === correcta.t;
+  if (acerto) estado.aciertos++; else estado.errores.push(ref);
+
+  botones.forEach((b,i) => {
+    b.disabled = true;
+    if (ops[i].t === correcta.t) b.classList.add("bien");
+    else if (i === idx) b.classList.add("mal");
+    else b.classList.add("apagada");
+  });
+
+  const v = document.getElementById("veredicto");
+  v.className = "veredicto " + (acerto ? "bien" : "mal");
+  v.textContent = acerto ? "Esa es tu línea." : "Esa no. La tuya es la marcada en verde.";
+
+  const acciones = app.querySelector(".acciones");
+  acciones.innerHTML = `<button class="principal" id="btn-sig">${estado.i+1 >= estado.items.length ? "Ver el resultado" : "Siguiente línea"}</button>
+    ${VOZ.soporta ? `<button class="secundaria" id="btn-oir-mia">Escuchar tu línea</button>` : ""}
+    <button class="secundaria" id="btn-salir">Cambiar de escena</button>`;
+  document.getElementById("btn-sig").onclick = siguiente;
+  const mia = document.getElementById("btn-oir-mia");
+  if (mia) mia.onclick = () => hablar(correcta.t, estado.pj);
+  document.getElementById("btn-salir").onclick = () => volverHasta("escenas");
+  document.getElementById("btn-sig").focus();
+}
+
+function siguiente(){
+  estado.i++;
+  if (estado.i >= estado.items.length) reemplazar("resumen");
+  else pintarQuiz();
+}
+
+/* ============================================================
+   resumen
+   ============================================================ */
+function pintarResumen(){
+  pararVoz();
+  pintarRastro("practica");
+  const total = estado.items.length;
+  const fallos = estado.errores.map(({ei,li}) => {
+    const e = GUION[ei], l = e.lineas[li];
+    return `<div class="fallo"><small>Escena ${esc(e.n)}${l.cancion ? " · " + esc(l.cancion) : ""}</small><p>${esc(l.t)}</p></div>`;
+  }).join("");
+
+  app.innerHTML = `<h2>Terminaste</h2>
+    <p class="puntaje">${estado.aciertos}/${total}</p>
+    <p class="ayuda">${estado.errores.length ? "Estas son las que se te escaparon." : "Todas bien. Pasá a otra escena."}</p>
+    ${estado.errores.length ? `<div class="fallos"><h3>Para repasar</h3>${fallos}</div>` : ""}
+    <div class="acciones">
+      ${estado.errores.length ? `<button class="principal" id="btn-rep">Repetir sólo estas</button>` : ""}
+      <button class="${estado.errores.length ? "secundaria" : "principal"}" id="btn-otra">Otra escena</button>
+      <button class="secundaria" id="btn-hablado">Ensayo hablado</button>
+      <button class="secundaria" id="btn-leer">Leer la escena</button>
+    </div>`;
+
+  const rep = document.getElementById("btn-rep");
+  if (rep) rep.onclick = () => {
+    estado.items = estado.errores.slice();
+    estado.i = 0; estado.aciertos = 0; estado.errores = [];
+    reemplazar("quiz");
+  };
+  document.getElementById("btn-otra").onclick = () => volverHasta("escenas");
+  document.getElementById("btn-hablado").onclick = () => ir("hablado");
+  document.getElementById("btn-leer").onclick = () => ir("lectura", {escena:estado.escena});
+}
+
+/* ============================================================
+   ensayo hablado
+   ============================================================ */
+let ensayo = null;
+
+function pintarHablado(){
+  pararVoz();
+  pintarRastro("practica");
+  const escenas = estado.escena === null ? GUION.map((e,i) => i) : [estado.escena];
+  ensayo = {escenas, k:0, li:0, pausado:false, mostrar:false, t:null, mic:{estado:"nuevo"}};
+  app.innerHTML = `
+    <div class="barra"><span id="eh-donde"></span><span>Ensayo hablado</span></div>
+    <div class="escenario" id="eh-escenario"></div>
+    <div class="acciones" id="eh-ctrl"></div>
+    <div id="eh-mic"></div>
+    <p class="ayuda">Las otras voces suenan solas. Cuando llega tu línea la obra se frena hasta que la digas.${MIC.activo && MIC.soporta ? " El micrófono se enciende solo y compara lo que decís con el guion." : ""}</p>`;
+  pasoEnsayo();
+}
+
+function pintarEnsayo(l, e, miTurno){
+  if (!ensayo) return;
+  const donde = document.getElementById("eh-donde");
+  if (!donde) return;
+  donde.textContent = `Escena ${e.n} · ${e.lugar}`;
+  const caja = document.getElementById("eh-escenario");
+  if (!esReplica(l)){
+    caja.className = "escenario acot";
+    caja.innerHTML = `<p class="dice">${esc(l.a)}</p>`;
+  } else if (miTurno){
+    caja.className = "escenario turno";
+    caja.innerHTML = `<div class="quien">${esc(l.p)}${l.cancion ? " · " + esc(l.cancion) : ""} — te toca</div>
+      ${ensayo.mostrar ? `<p class="dice">${esc(l.t)}</p>` : `<p class="dice oculto">Decí tu línea y seguí.</p>`}`;
+  } else {
+    caja.className = "escenario";
+    caja.innerHTML = `<div class="quien">${esc(l.p)}${l.cancion ? " · canta " + esc(l.cancion) : ""}</div>
+      <p class="dice">${esc(l.t)}</p>`;
+  }
+
+  const ctrl = document.getElementById("eh-ctrl");
+  if (miTurno){
+    ctrl.innerHTML = `<button class="principal" id="eh-sigue">Ya la dije</button>
+      <button class="secundaria" id="eh-ver">${ensayo.mostrar ? "Escuchar la línea" : "Ver la línea"}</button>
+      <button class="secundaria" id="eh-salir">Salir</button>`;
+    document.getElementById("eh-sigue").onclick = avanzarEnsayo;
+    document.getElementById("eh-ver").onclick = () => {
+      if (ensayo.mostrar){ cortarMic(); hablar(l.t, estado.pj); }
+      else { ensayo.mostrar = true; pintarEnsayo(l, e, true); }
+    };
+    pintarMic(l, e);
+  } else {
+    ctrl.innerHTML = `<button class="principal" id="eh-pausa">${ensayo.pausado ? "Seguir" : "Pausar"}</button>
+      <button class="secundaria" id="eh-rep">Repetir la línea</button>
+      <button class="secundaria" id="eh-salir">Salir</button>`;
+    document.getElementById("eh-pausa").onclick = () => {
+      ensayo.pausado = !ensayo.pausado;
+      if (ensayo.pausado){ pararVoz(); clearTimeout(ensayo.t); pintarEnsayo(l, e, false); }
+      else pasoEnsayo();
+    };
+    document.getElementById("eh-rep").onclick = () => { clearTimeout(ensayo.t); pasoEnsayo(); };
+    pintarMic(l, e);
+  }
+  document.getElementById("eh-salir").onclick = () => volverHasta("escenas");
+}
+
+const ERRORES_MIC = {
+  "not-allowed":"El micrófono está bloqueado. Permitilo desde el candado de la barra de direcciones o, si la instalaste, en Ajustes › Apps › Mamma Mia › Permisos.",
+  "service-not-allowed":"El navegador bloqueó el micrófono para archivos locales. Probá abrir la página desde Chrome con permiso, o servirla por http.",
+  "network":"El reconocimiento de voz de Chrome necesita conexión a internet.",
+  "no-speech":"No te escuché. Probá de nuevo, más cerca del micrófono.",
+  "audio-capture":"No encuentro ningún micrófono conectado.",
+  "aborted":"Se cortó la escucha.",
+  "sin-soporte":"Este navegador no reconoce voz. Probá con Chrome o Edge.",
+  "start":"No pude encender el micrófono."
+};
+
+function pintarMic(l, e){
+  const caja = document.getElementById("eh-mic");
+  if (!caja) return;
+  const m = ensayo && ensayo.mic;
+  if (!m || !MIC.activo || !MIC.soporta){ caja.innerHTML = ""; return; }
+
+  if (m.estado === "oyendo"){
+    caja.innerHTML = `<div class="mic-caja">
+      <p class="mic-estado"><span class="mic-punto"></span>Escuchando…</p>
+      <p class="mic-vivo">${esc(m.texto) || "…"}</p>
+      <div class="acciones"><button class="secundaria" id="mic-listo">Terminé</button></div>
+    </div>`;
+    document.getElementById("mic-listo").onclick = pararMic;
+    return;
+  }
+  if (m.estado === "error"){
+    caja.innerHTML = `<div class="mic-caja">
+      <p class="mic-estado">${esc(ERRORES_MIC[m.err] || "No pude usar el micrófono (" + m.err + ").")}</p>
+      <div class="acciones"><button class="secundaria" id="mic-otra">Probar de nuevo</button></div>
+    </div>`;
+    document.getElementById("mic-otra").onclick = () => iniciarEscucha(l, e);
+    return;
+  }
+  if (m.estado === "listo"){
+    const p = m.res.pct;
+    const clase = p >= 85 ? "alto" : p >= 60 ? "medio" : "bajo";
+    const juicio = p >= 85 ? "Clavada." : p >= 60 ? "Cerca, se te escapó algo." : "Esa no te salió.";
+    caja.innerHTML = `<div class="mic-caja">
+      <p class="pct ${clase}">${p}%</p>
+      <p class="mic-estado">${juicio}</p>
+      ${htmlDiff(m.res)}
+      <div class="acciones"><button class="secundaria" id="mic-otra">Decirla de nuevo</button></div>
+    </div>`;
+    document.getElementById("mic-otra").onclick = () => iniciarEscucha(l, e);
+  }
+}
+
+function iniciarEscucha(l, e){
+  if (!ensayo || !MIC.activo || !MIC.soporta) return;
+  clearTimeout(ensayo.t);
+  ensayo.mic = {estado:"oyendo", texto:"", res:null, err:null};
+  pintarMic(l, e);
+  const marca = ensayo;
+  escuchar(
+    txt => {
+      if (ensayo !== marca) return;
+      ensayo.mic.texto = txt;
+      const v = document.querySelector(".mic-vivo");
+      if (v) v.textContent = txt || "…";
+    },
+    txt => {
+      if (ensayo !== marca) return;
+      if (!txt){ ensayo.mic = {estado:"error", err:"no-speech"}; return pintarMic(l, e); }
+      ensayo.mic = {estado:"listo", texto:txt, res:comparar(txt, l.t)};
+      pintarMic(l, e);
+      if (ensayo.mic.res.pct >= 85) ensayo.t = setTimeout(avanzarEnsayo, 1400);
+    },
+    err => {
+      if (ensayo !== marca) return;
+      ensayo.mic = {estado:"error", err:err};
+      pintarMic(l, e);
+    }
+  );
+}
+
+function pasoEnsayo(){
+  if (!ensayo) return;
+  const ei = ensayo.escenas[ensayo.k];
+  const e = GUION[ei];
+  if (ensayo.li >= e.lineas.length){
+    ensayo.k++; ensayo.li = 0;
+    if (ensayo.k >= ensayo.escenas.length) return finEnsayo();
+    return pasoEnsayo();
+  }
+  const l = e.lineas[ensayo.li];
+  const miTurno = esReplica(l) && quienes(l).includes(estado.pj);
+  pintarEnsayo(l, e, miTurno);
+  if (miTurno){
+    if (MIC.activo && MIC.soporta && (!ensayo.mic || ensayo.mic.estado === "nuevo")) iniciarEscucha(l, e);
+    return;
+  }
+  if (ensayo.pausado) return;
+  if (!esReplica(l)){
+    ensayo.t = setTimeout(avanzarEnsayo, Math.min(4500, 1200 + l.a.length * 22));
+    return;
+  }
+  const marca = ensayo;
+  hablar(l.t, quienes(l)[0], () => {
+    if (ensayo !== marca || ensayo.pausado) return;
+    ensayo.t = setTimeout(avanzarEnsayo, 320);
+  });
+}
+
+function avanzarEnsayo(){
+  if (!ensayo) return;
+  clearTimeout(ensayo.t);
+  cortarMic();
+  ensayo.li++; ensayo.mostrar = false;
+  ensayo.mic = {estado:"nuevo"};
+  pasoEnsayo();
+}
+
+function finEnsayo(){
+  pararVoz();
+  const caja = document.getElementById("eh-escenario");
+  if (!caja) return;
+  caja.className = "escenario acot";
+  caja.innerHTML = `<p class="dice">Fin de la escena.</p>`;
+  document.getElementById("eh-ctrl").innerHTML = `<button class="principal" id="eh-otra">Otra escena</button>
+    <button class="secundaria" id="eh-rehacer">Repetir esta</button>`;
+  document.getElementById("eh-otra").onclick = () => volverHasta("escenas");
+  document.getElementById("eh-rehacer").onclick = pintarHablado;
+}
+
+/* ============================================================
+   lectura
+   ============================================================ */
+function pintarLectura(escIdx){
+  pararVoz();
+  pintarRastro("practica");
+  const escenas = (escIdx === null || escIdx === undefined) ? GUION.map((e,i)=>i) : [escIdx];
+  const cuerpo = escenas.map(i => {
+    const e = GUION[i];
+    const lineas = e.lineas.map(l => htmlReplica(l, esReplica(l) && quienes(l).includes(estado.pj) ? "mio" : "")).join("");
+    return `<h2>Escena ${esc(e.n)} — ${esc(e.lugar)}</h2><div class="lectura">${lineas}</div>`;
+  }).join("");
+  app.innerHTML = cuerpo + `<div class="acciones">
+      <button class="principal" id="btn-volver">Volver</button>
+    </div>`;
+  document.getElementById("btn-volver").onclick = atras;
+}
+
+/* ============================================================
+   teclado
+   ============================================================ */
+document.addEventListener("keydown", ev => {
+  if (ev.target && ev.target.closest && ev.target.closest("#aviso-nueva")) return;
+  if (ensayo){
+    if (ev.key === " " || ev.key === "Enter"){
+      const b = document.getElementById("eh-sigue") || document.getElementById("eh-pausa");
+      if (b){ b.click(); ev.preventDefault(); }
+    }
+    return;
+  }
+  const ops = Array.from(app.querySelectorAll(".op"));
+  if (ops.length && !estado.respondida && ["1","2","3","4"].includes(ev.key)){
+    const b = ops[Number(ev.key)-1];
+    if (b){ b.click(); ev.preventDefault(); }
+  } else if (estado.respondida && (ev.key === "Enter" || ev.key === " ")){
+    const sig = document.getElementById("btn-sig");
+    if (sig){ sig.click(); ev.preventDefault(); }
+  }
+});
+
+try { history.replaceState({i:0}, ""); } catch(e){ usaHistoria = false; }
+pintar();
+
+/* ============================================================
+   app instalable: funciona sin internet y avisa si hay versión nueva
+   ============================================================ */
+(function(){
+  if (!("serviceWorker" in navigator) || !/^https?:$/.test(location.protocol)) return;
+  const aviso = document.getElementById("aviso-nueva");
+  let esperando = null, pidioActualizar = false, recargando = false;
+
+  const mostrar = sw => {
+    esperando = sw;
+    aviso.hidden = false;
+  };
+  document.getElementById("btn-actualizar").onclick = () => {
+    if (!esperando) return location.reload();
+    document.getElementById("btn-actualizar").disabled = true;
+    pidioActualizar = true;
+    esperando.postMessage({tipo:"activar"});
+  };
+  document.getElementById("btn-despues").onclick = () => { aviso.hidden = true; };
+
+  // la primera instalación también cambia el controlador: ahí no hay que recargar
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (!pidioActualizar || recargando) return;
+    recargando = true;
+    location.reload();
+  });
+
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").then(reg => {
+      // sólo hay "versión nueva" si ya había una instalada antes
+      if (reg.waiting && navigator.serviceWorker.controller) mostrar(reg.waiting);
+      reg.addEventListener("updatefound", () => {
+        const nuevo = reg.installing;
+        if (!nuevo) return;
+        nuevo.addEventListener("statechange", () => {
+          if (nuevo.state === "installed" && navigator.serviceWorker.controller) mostrar(nuevo);
+        });
+      });
+      // la app instalada puede quedar abierta días: revisamos al volver a ella
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") reg.update().catch(() => {});
+      });
+    }).catch(() => {});
+  });
+})();
+</script>
+</body>
+</html>
